@@ -108,6 +108,56 @@ class TestAPI(unittest.TestCase):
             contents = f.read()
         self.assertEqual(contents, b"File contents")
         
+    def test_edit_song(self):
+        self.test_add_song()
+        
+        data = {
+            "filename": "edited_file_name!",
+            "id": 1
+        }
+        
+        response = self.client.put("/api/songs",
+                    data=json.dumps(data),
+                    content_type="application/json",
+                    headers=[("Accept", "application/json")]
+        )
+        
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.mimetype, "application/json")
+        
+        data = json.loads(response.data.decode("ascii"))
+        
+        self.assertEqual(data["name"], "edited_file_name!")
+        
+        songs = session.query(models.Song).all()
+        self.assertEqual(len(songs), 1)
+        
+        song = songs[0]
+        self.assertEqual(song.file.filename, "edited_file_name!")
+
+    def test_delete_song(self):
+        self.test_add_song()
+        
+        data = {
+            "file": {
+                "id": 1
+            }
+        }
+        
+        response = self.client.delete("/api/songs",
+                    data=json.dumps(data),
+                    content_type="application/json",
+                    headers=[("Accept", "application/json")]
+        )
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.mimetype, "application/json")
+        
+        songs = session.query(models.Song).all()
+        data = json.loads(response.data.decode("ascii"))
+        self.assertEqual(data["message"], "Song has been deleted!")
+        self.assertEqual(len(data), 1)
+        self.assertEqual(len(songs), 0)
         
 
 if __name__ == "__main__":
