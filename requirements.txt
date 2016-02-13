@@ -7,3 +7,4 @@ itsdangerous
 jsonschema
 nose
 psycopg2
+flask-script
