@@ -44,6 +44,7 @@ Tuneful.prototype.onSongClicked = function(event) {
 
 Tuneful.prototype.onPlayButtonClicked = function() {
     // Switch between play and pause
+    console.log('play button clicked')
     if (this.playing) {
         this.pause();
     }
@@ -63,10 +64,16 @@ Tuneful.prototype.play = function() {
         return;
     }
     // Start the song playing, and set the play icon
+    
+    console.log('trying to play version 1')
     this.wavesurfer.play();
+    console.log('trying to play version 2')
     this.togglePlayIcon();
+    console.log('trying to play version 3')
     this.luke.toggleClass("spin");
+    console.log('trying to play version 4')
     this.playing = true;
+    console.log('trying to play version 5')
 };
 
 Tuneful.prototype.pause = function() {
@@ -82,6 +89,7 @@ Tuneful.prototype.pause = function() {
 
 Tuneful.prototype.stop = function() {
     if (!this.playing) {
+        console.log('doing stuff...')
         return;
     }
     // Pause the song, and set the pause icon
@@ -89,7 +97,7 @@ Tuneful.prototype.stop = function() {
     this.togglePlayIcon();
     this.luke.toggleClass("spin");
     this.playing = false;
-}
+};
 
 Tuneful.prototype.onAddButtonClicked = function() {
     // Fake a click on the file input so we can choose a song
